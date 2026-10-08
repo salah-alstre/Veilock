@@ -1,0 +1,91 @@
+[package]
+name = "veilock"
+version = "0.1.0"
+description = "Local-first file and folder encryption"
+edition = "2021"
+rust-version = "1.77"
+publish = false
+
+[lib]
+name = "veilock_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-single-instance = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# --- cryptography (RustCrypto, pure Rust, no unsafe in our code) ---
+aes-gcm = "0.10"
+argon2 = "0.5"
+sha2 = "0.10"
+hkdf = "0.12"
+rand = "0.8"
+zeroize = { version = "1", features = ["derive"] }
+secrecy = "0.10"
+subtle = "2"
+base32 = "0.5"
+unicode-normalization = "0.1"
+
+# --- storage / misc ---
+rusqlite = { version = "0.32", features = ["bundled"] }
+thiserror = "2"
+uuid = { version = "1", features = ["v4", "serde"] }
+time = { version = "0.3", features = ["formatting", "parsing", "serde", "macros"] }
+dirs = "5"
+arboard = "3"
+log = "0.4"
+winreg = "0.52"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.59", features = [
+  "Win32_Foundation",
+  "Win32_System_RemoteDesktop",
+  "Win32_UI_WindowsAndMessaging",
+  "Win32_System_LibraryLoader",
+  "Win32_Graphics_Gdi",
+  "Win32_Storage_FileSystem",
+  "Win32_System_IO",
+] }
+
+[dev-dependencies]
+tempfile = "3"
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+panic = "abort"
+strip = true
+
+# Crypto crates are far too slow in debug builds (Argon2 especially) for the test suite.
+[profile.dev.package.argon2]
+opt-level = 3
+[profile.dev.package.aes-gcm]
+opt-level = 3
+[profile.dev.package.aes]
+opt-level = 3
+[profile.dev.package.ghash]
+opt-level = 3
+[profile.dev.package.blake2]
+opt-level = 3
+[profile.test.package.argon2]
+opt-level = 3
+[profile.test.package.aes-gcm]
+opt-level = 3
+[profile.test.package.aes]
+opt-level = 3
+[profile.test.package.ghash]
+opt-level = 3
+[profile.test.package.sha2]
+opt-level = 3

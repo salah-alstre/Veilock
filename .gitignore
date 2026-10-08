@@ -1,0 +1,13 @@
+node_modules/
+dist/
+src-tauri/target/
+src-tauri/gen/
+*.log
+.env
+.env.*
+# Never commit anything that looks like key material or user data
+*.veil
+*.veilvault
+*.recovery.txt
+vault.db
+history.db

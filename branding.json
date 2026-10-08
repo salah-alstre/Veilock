@@ -1,0 +1,13 @@
+{
+  "appName": "Veilock",
+  "productSlug": "veilock",
+  "identifier": "app.veilock.desktop",
+  "publisher": "Veilock",
+  "fileExtension": "veil",
+  "vaultExportExtension": "veilvault",
+  "fileTypeDescription": "Veilock encrypted item",
+  "vaultTypeDescription": "Veilock exported vault",
+  "tagline": "Protect your files with real encryption.",
+  "defaultPanicShortcut": "Ctrl+Shift+L",
+  "version": "0.1.0"
+}
